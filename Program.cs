@@ -92,7 +92,7 @@
         {
         }
 
-        //Note: min,max--> negative nr, Spil already exist --> Error message (x), back to menu --> while isRunning ?? (x)
+        
         static void TilføjSpil()
         {
             Console.WriteLine("TilføjSpil: Du kan tilføje spil til Systemet.");
@@ -105,65 +105,81 @@
                 if (item.Name == userInputName)
                 {
                     Console.WriteLine($"{userInputName} eksisterer allerede i systemet.");
-                    Console.WriteLine("Tryk en tast, for at komme tilbage til Menu. ");
-                    Console.ReadKey();
+                    ContinueOrMenu();
                     return;
                 }
-
             }
 
             Console.WriteLine("Indsat genre.");
             string userInputGenre = Console.ReadLine().ToLower();
 
-            //Fix 2 things : String and int error (x), negative number()
             Console.WriteLine("Indsat MinPlayers.");
-            bool isInteger = false;
-            string userInputMinPlayers;
-            //true --> while loop running
-            while (!isInteger) 
-            {
-                userInputMinPlayers = Console.ReadLine();
-                int value;
-                isInteger = int.TryParse(userInputMinPlayers, out value);
-                if(value < 0)
-                {
-                    isInteger = true;
-                    Console.WriteLine("Indsat venligst positivt heltal.");
-                }
-                Console.WriteLine("Indsat venligst kun heltal.");
-            }
-          
+            int userInputMinPlayers = GetPlayerNrValid();
                 
             Console.WriteLine("Indsat MaxPlayers.");
-            int userInputMaxPlayers = int.Parse(Console.ReadLine());
-
-           
-          
-            
-            // Game game = new Game(userInputName, userInputGenre, userInputMinPlayers, userInputMaxPlayers);
-            // games.Add(game);
-    
-            Console.WriteLine($"Nu {userInputName} var tilføjet til systemet.");
-            Console.WriteLine("Vil du tilføje Spil mere? \n 1.ja \n 2.nej");
-
-            String userAnswer = Console.ReadLine();
-            while ((userAnswer != "1") && (userAnswer !="2"))
+            int userInputMaxPlayers = GetPlayerNrValid();
+            while (userInputMinPlayers > userInputMaxPlayers)
             {
-                Console.WriteLine("Ugyldigt svar.Indsat venligst 1 eller 2");
+                Console.WriteLine("Max Players skal være større end eller lig med Min Players.");
+                Console.WriteLine("Indsat MaxPlayers igen.");
+                userInputMaxPlayers = GetPlayerNrValid();
+            }
+
+            Game game = new Game(userInputName, userInputGenre, userInputMinPlayers, userInputMaxPlayers);
+            games.Add(game);
+    
+            Console.WriteLine($"Nu - {userInputName} - var tilføjet til systemet.");
+            ContinueOrMenu();
+        }
+
+        static string ContinueOrMenu()
+        {
+            Console.WriteLine("Vil du tilføje Spil mere? \n 1.ja \n 2.nej");
+            String userAnswer = Console.ReadLine();
+            while ((userAnswer != "1") && (userAnswer != "2"))
+            {
+                Console.WriteLine("Ugyldigt svar. Indsat venligst 1 eller 2.");
                 userAnswer = Console.ReadLine();
             }
             Console.Clear();
-            switch (userAnswer) 
+            switch (userAnswer)
             {
                 case "1":
                     TilføjSpil();
                     break;
                 case "2":
-                    Console.WriteLine("Du vil tilbage til Menu.");
-                    Console.ReadLine();
-                    ShowMainMenu();                    
+                    ReturnToMenu();
+                    ShowMainMenu();
                     break;
-            }     
+            }
+            return userAnswer;
+        }
+
+        public static int GetPlayerNrValid()
+        {
+            bool isValid = false;
+            string userInputNumbers;
+            int value = -1;
+            //true --> while loop running.
+            while (!isValid)
+            {
+                userInputNumbers = Console.ReadLine();
+                bool isInteger = int.TryParse(userInputNumbers, out value);
+                if (isInteger)
+                {
+                    if (value > 0)
+                        isValid = true;
+                    else
+                    {
+                        Console.WriteLine("Indsat venligst positivt heltal."); //isValid is still false.--> while loop continues.
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Indsat venligst kun heltal. Ikke abc, decimeltarl eller noget.");
+                }
+            }
+            return value;
         }
 
         /*
@@ -225,7 +241,7 @@
             ReturnToMenu();
         }
         */
-       
+
 
         static void RegistrerForespørgelser()
         {
