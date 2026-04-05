@@ -117,6 +117,25 @@
 			{
 				Console.WriteLine(game.GameName);
 			}
+
+            Console.WriteLine();
+
+            Console.WriteLine("Sorteret alfabetisk:");
+            var sorted = games.OrderBy(g => g.GameName).ToList();
+
+            foreach (Game game in sorted)
+            {
+                Console.WriteLine(game.GameName);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("Sorteret alfabetisk:");
+            var sortedDescending = games.OrderByDescending(g => g.GameName).ToList();
+
+            foreach (Game game in sortedDescending)
+            {
+                Console.WriteLine(game.GameName);
+            }
         }
 
 		static void LoadGames()
