@@ -4,12 +4,14 @@
 	using System.Collections.Generic; // Lists
     using System.Diagnostics;
     using System.Linq; // Lookup
-	using System.Text.Json;
+    using System.Security.Cryptography.X509Certificates;
+    using System.Text.Json;
 
 
 
 	internal class Program
 	{
+		static List<Game> games = new List<Game>(); //liste til spil på lager
 
 		static void Main(string[] args)
 
@@ -99,7 +101,11 @@
 
 		static void UdskrivLagerListe()
 		{
+			Console.Clear() ;
 
+			Console.WriteLine("Her er listen over spillene på lager: ");
+
+			
 		}
 
 		static void LoadGames()
