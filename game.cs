@@ -2,6 +2,7 @@
 {
     internal class Game
     {
-        public string Name {  get; set; }
+        public string GameName {  get; set; }
+
     }
 }

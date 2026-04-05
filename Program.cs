@@ -11,7 +11,7 @@
 
 	internal class Program
 	{
-		static List<Game> games = new List<Game>(); //liste til spil på lager
+		
 
 		static void Main(string[] args)
 
@@ -104,9 +104,20 @@
 			Console.Clear() ;
 
 			Console.WriteLine("Her er listen over spillene på lager: ");
+			List<Game> games = new List<Game>();
 
-			
-		}
+			new Game { GameName = "Sequence" };
+			new Game { GameName = "Ticket to ride" };
+			new Game { GameName = "7 Wonders" };
+			new Game { GameName = "Alverdens" };
+			new Game { GameName = "A la carte: dessert" };
+			new Game { GameName = "Bad people" };
+
+			foreach (Game game in games)
+			{
+				Console.WriteLine(game.GameName);
+			}
+        }
 
 		static void LoadGames()
 		{
