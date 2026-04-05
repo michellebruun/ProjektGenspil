@@ -104,23 +104,23 @@
 			Console.Clear() ;
 
 			Console.WriteLine("Her er listen over spillene på lager: ");
-			List<Game> games = new List<Game>();
+			List<Game> games = new List<Game>(); //Here a list is made for the games
 
 			new Game { GameName = "Sequence" };
 			new Game { GameName = "Ticket to ride" };
 			new Game { GameName = "7 Wonders" };
 			new Game { GameName = "Alverdens" };
 			new Game { GameName = "A la carte: dessert" };
-			new Game { GameName = "Bad people" };
+			new Game { GameName = "Bad people" }; //The games above have been added to the list
 
-			foreach (Game game in games)
+			foreach (Game game in games) // a foreach loop is used to write out the list of games
 			{
 				Console.WriteLine(game.GameName);
 			}
 
             Console.WriteLine();
 
-            Console.WriteLine("Sorteret alfabetisk:");
+            Console.WriteLine("Sorteret alfabetisk:"); // Here a foreach loop is used to write out the list in alphabetical order
             var sorted = games.OrderBy(g => g.GameName).ToList();
 
             foreach (Game game in sorted)
@@ -129,7 +129,7 @@
             }
 
             Console.WriteLine();
-            Console.WriteLine("Sorteret alfabetisk:");
+            Console.WriteLine("Sorteret alfabetisk:"); // Here a foreach loops is used to write out the list in reverse alphabetical order
             var sortedDescending = games.OrderByDescending(g => g.GameName).ToList();
 
             foreach (Game game in sortedDescending)
