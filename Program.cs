@@ -191,6 +191,8 @@
 				{
 					Console.WriteLine($"Spil: {r.GameName}");
 					Console.WriteLine($"Kunde: {r.CustomerName}");
+                    Console.WriteLine($"Email: {r.CustomerMail}");
+                    Console.WriteLine($"TelefonNummer: {r.CustomerPhoneNumber}");
 					Console.WriteLine("-----------------------");
 				}
 			}
