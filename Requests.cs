@@ -9,5 +9,9 @@ namespace Genspil
 
 		public string GameName { get; set; }
 		public string CustomerName { get; set; }
+
+		public string CustomerMail { get; set; }
+
+		public string CustomerPhoneNumber { get; set; }
 	}
 }

@@ -156,10 +156,18 @@
 			Console.WriteLine("Indtast kundens navn: ");
 			string customerName = Console.ReadLine();
 
+            Console.WriteLine("Indtast kundens email: ");
+			string customerMail = Console.ReadLine();
+
+            Console.WriteLine("Indtast kundens telefonnummer: ");
+			string customerPhone = Console.ReadLine();
+
 			Request newRequest = new Request
 			{
 				GameName = gameName,
-				CustomerName = customerName
+				CustomerName = customerName,
+				CustomerMail = customerMail,
+				CustomerPhoneNumber = customerPhone
 			};
 
 			requests.Add(newRequest);
