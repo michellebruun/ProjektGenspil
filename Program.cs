@@ -102,32 +102,62 @@
 				Console.Clear();
                 Console.WriteLine("=== Søg efter spil ===");
 				Console.WriteLine("Vælg et søgekriterie: ");
-				//string titleDisplay = title != null ? $"({title})" : "";
-				Console.WriteLine($"1) Titel ({title})");
-				Console.WriteLine($"2) Genre ({genre})");
-				Console.WriteLine($"3) Antal Spillere ({players})");
+				Console.Write("\n1) Titel");
+				if (title != null)
+				{
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write($" [ {title} ]");
+                    Console.ResetColor();
+                }
+                Console.Write("\n2) Genre");
+                if (genre != null)
+				{
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write($" [ {genre} ]");
+                    Console.ResetColor();
+                }
+				Console.Write("\n3) Antal Spillere");
+				if (players != -1)
+				{
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write($" [ {players} ]");
+                    Console.ResetColor();
+                }
 				//decimal minPriceDisplay = minPrice >= 0 ? minPrice : 0;
-                Console.WriteLine($"4) Pris ({minPrice} - {maxPrice})");
-				Console.WriteLine($"5) Stand ({condition})");
-				Console.WriteLine("Tryk S for at søge");
+                Console.Write("\n4) Pris");
+				if (minPrice > 0)
+				{
+					Console.ForegroundColor = ConsoleColor.Blue;
+					Console.Write($" [ {minPrice} - {maxPrice} DKK. ]");
+					Console.ResetColor();
+				}
+				Console.Write("\n5) Stand");
+				if (condition != null)
+				{
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write($" [ {condition} ]");
+                    Console.ResetColor();
+                }
+
+				Console.WriteLine("\n\nTryk S for at søge");
 				string input = Console.ReadKey(true).KeyChar.ToString();
 
 				switch (input)
 				{
 					case "1":
-						Console.Write("Indtast titel: ");
+						Console.Write("Indtast titel (efterlad blank for at fjerne søgekriteriet): ");
 						title = Console.ReadLine();
 						if (title == "")
 							title = null;
 						break;
 					case "2":
-						Console.Write("Indtast genre: ");
+						Console.Write("Indtast genre (efterlad blank for at fjerne søgekriteriet): ");
 						genre = Console.ReadLine();
 						if (genre == "")
 							genre = null;
 						break;
 					case "3":
-						Console.Write("Indtast antal spillere: ");
+						Console.Write("Indtast antal spillere (efterlad blank for at fjerne søgekriteriet): ");
 						string input3 = Console.ReadLine();
 						if (input3 == "")
 							players = -1;
@@ -136,13 +166,13 @@
 
 						break;
 					case "4":
-						Console.Write("Indtast minimum pris: ");
+						Console.Write("Indtast minimum pris (efterlad blank for at fjerne søgekriteriet): ");
 						string input4 = Console.ReadLine();
 						if (input4 == "")
 							minPrice = -1;
 						else
 							minPrice = Convert.ToInt32(input4);
-						Console.Write("Indtast maksimal pris: ");
+						Console.Write("Indtast maksimal pris (efterlad blank for at fjerne søgekriteriet): ");
                         input4 = Console.ReadLine();
                         if (input4 == "")
                             maxPrice = -1;
@@ -150,13 +180,13 @@
                             maxPrice = Convert.ToInt32(input4);
                         break;
 					case "5":
-						Console.Write("Indtast stand: ");
+						Console.Write("Indtast stand (efterlad blank for at fjerne søgekriteriet): ");
 						condition = Console.ReadLine();
 						if (condition == "")
 							condition = null;
 						break;
 					case "s":
-                        Console.WriteLine("\nSøgeresultat: ");
+                        Console.WriteLine("\nSøgeresultat (efterlad blank for at fjerne søgekriteriet): ");
                         foreach (GameCopy game in GameList)
                         {
                             if ((title == null || game.Name == title)
