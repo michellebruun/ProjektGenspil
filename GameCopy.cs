@@ -27,7 +27,7 @@ internal class GameCopy
 		Console.WriteLine($"Genre: {game.Genre}");
 		Console.WriteLine($"Spillere: {game.MinPlayers} - {game.MaxPlayers}");
 		Console.WriteLine($"Stand: {Condition}");
-		Console.WriteLine($"Pris: {Price}");
+		Console.WriteLine($"Pris: {Price} DKK.");
 		Console.WriteLine("-----------------------");
 	}
 }
