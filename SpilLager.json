@@ -1,0 +1,259 @@
+[
+  {
+    "Name": "ludo",
+    "Genre": "br\u00E6tspil",
+    "MinPlayers": 1,
+    "MaxPlayers": 4,
+    "gameCopies": [
+      {
+        "Condition": "Mint",
+        "Price": 250
+      }
+    ]
+  },
+  {
+    "Name": "skak",
+    "Genre": "br\u00E6tspil",
+    "MinPlayers": 2,
+    "MaxPlayers": 2,
+    "gameCopies": [
+      {
+        "Condition": "Ny",
+        "Price": 200
+      },
+      {
+        "Condition": "Meget Brugt",
+        "Price": 25
+      }
+    ]
+  },
+  {
+    "Name": "kalaha",
+    "Genre": "br\u00E6tspil",
+    "MinPlayers": 2,
+    "MaxPlayers": 4,
+    "gameCopies": [
+      {
+        "Condition": "Brugt",
+        "Price": 75
+      }
+    ]
+  },
+  {
+    "Name": "uno",
+    "Genre": "kortspil",
+    "MinPlayers": 2,
+    "MaxPlayers": 8,
+    "gameCopies": []
+  },
+  {
+    "Name": "mikado",
+    "Genre": "pinde-spil",
+    "MinPlayers": 1,
+    "MaxPlayers": 4,
+    "gameCopies": []
+  },
+  {
+    "Name": "Sequence",
+    "Genre": "familie",
+    "MinPlayers": 2,
+    "MaxPlayers": 6,
+    "gameCopies": [
+      {
+        "Condition": "Original - god stand",
+        "Price": 100
+      },
+      {
+        "Condition": "Original - til rep",
+        "Price": 20
+      },
+      {
+        "Condition": "Original - til rep",
+        "Price": 20
+      },
+      {
+        "Condition": "Junior - lidt skrammet",
+        "Price": 80
+      },
+      {
+        "Condition": "Rejsespil - god stand",
+        "Price": 100
+      },
+      {
+        "Condition": "Rejsespil - god stand",
+        "Price": 100
+      }
+    ]
+  },
+  {
+    "Name": "Ticket to Ride",
+    "Genre": "strategi",
+    "MinPlayers": 2,
+    "MaxPlayers": 5,
+    "gameCopies": [
+      {
+        "Condition": "Berlin - god stand",
+        "Price": 150
+      },
+      {
+        "Condition": "Berlin - god stand",
+        "Price": 150
+      },
+      {
+        "Condition": "Berlin - god stand",
+        "Price": 150
+      },
+      {
+        "Condition": "Berlin - lidt slidt",
+        "Price": 100
+      },
+      {
+        "Condition": "Berlin - til rep",
+        "Price": 30
+      },
+      {
+        "Condition": "Europe dansk - god stand",
+        "Price": 150
+      },
+      {
+        "Condition": "Europe dansk - god stand",
+        "Price": 150
+      },
+      {
+        "Condition": "First journey - p\u00E5 venteliste (Mejse Johansen)",
+        "Price": 0
+      },
+      {
+        "Condition": "Ghost train - m\u00E5ske p\u00E5 vej",
+        "Price": 0
+      },
+      {
+        "Condition": "Japan \u0026 Italy - ok stand",
+        "Price": 120
+      }
+    ]
+  },
+  {
+    "Name": "7 Wonders",
+    "Genre": "strategi",
+    "MinPlayers": 2,
+    "MaxPlayers": 7,
+    "gameCopies": [
+      {
+        "Condition": "Dansk 2nd edition - reserveret (Torstein)",
+        "Price": 0
+      },
+      {
+        "Condition": "Architects dansk - ok stand",
+        "Price": 120
+      },
+      {
+        "Condition": "Architects dansk - ok stand",
+        "Price": 120
+      },
+      {
+        "Condition": "Architects dansk - ikke \u00E5bnet",
+        "Price": 200
+      },
+      {
+        "Condition": "Architects Medals - skadet hj\u00F8rne",
+        "Price": 80
+      },
+      {
+        "Condition": "Cities engelsk - til rep",
+        "Price": 30
+      },
+      {
+        "Condition": "Duel agora dansk - ok stand",
+        "Price": 120
+      },
+      {
+        "Condition": "Duel agora dansk - ok stand",
+        "Price": 120
+      },
+      {
+        "Condition": "Duel agora dansk - helt ny",
+        "Price": 200
+      },
+      {
+        "Condition": "Duel agora engelsk - kan m\u00E5ske reddes",
+        "Price": 40
+      }
+    ]
+  },
+  {
+    "Name": "Alverdens",
+    "Genre": "quiz",
+    "MinPlayers": 2,
+    "MaxPlayers": 6,
+    "gameCopies": [
+      {
+        "Condition": "p\u00E5 venteliste (Cille fra skobutikken)",
+        "Price": 0
+      },
+      {
+        "Condition": "Helte - til rep",
+        "Price": 30
+      },
+      {
+        "Condition": "OMG - helt ny",
+        "Price": 150
+      },
+      {
+        "Condition": "Popkultur - god stand",
+        "Price": 120
+      },
+      {
+        "Condition": "Popkultur - let ridset",
+        "Price": 90
+      },
+      {
+        "Condition": "Popkultur - let ridset",
+        "Price": 90
+      },
+      {
+        "Condition": "Arkitektur - god stand",
+        "Price": 120
+      },
+      {
+        "Condition": "Arkitektur - god stand",
+        "Price": 120
+      },
+      {
+        "Condition": "Helte - god stand",
+        "Price": 120
+      }
+    ]
+  },
+  {
+    "Name": "A la carte: dessert",
+    "Genre": "familie",
+    "MinPlayers": 2,
+    "MaxPlayers": 4,
+    "gameCopies": [
+      {
+        "Condition": "god stand",
+        "Price": 100
+      }
+    ]
+  },
+  {
+    "Name": "Bad people",
+    "Genre": "party",
+    "MinPlayers": 3,
+    "MaxPlayers": 10,
+    "gameCopies": [
+      {
+        "Condition": "p\u00E5 venteliste (Allan fra min opgang)",
+        "Price": 0
+      }
+    ]
+  },
+  {
+    "Name": "poker",
+    "Genre": "kortspil",
+    "MinPlayers": 2,
+    "MaxPlayers": 8,
+    "gameCopies": []
+  }
+]
