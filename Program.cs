@@ -158,7 +158,7 @@
 						}
 						break;
 					case "2":
-                        Console.Write(message);
+                        Console.Write("Indtast genre (efterlad blank for at fjerne søgekriteriet): ");
                         genre = Console.ReadLine();
 						if (genre == "")
 						{
