@@ -1,325 +1,680 @@
 ﻿namespace ProjektGenspil
 {
-    using System;
-    using System.Collections.Generic; // Lists
-    using System.Diagnostics;
-    using System.Linq; // Lookup
-    using System.Text.Json;
-    using System.Xml.Linq;
+	using System;
+	using System.Collections.Generic; // Lists
+	using System.Diagnostics;
+	using System.Linq; // Lookup
+	using System.Text.Json;
+	using Genspil;
 
-    internal class Program
-    {
-        // Lister til spil og forespørgsler
-        static List<Game> games = new List<Game>();
-        static List<Request> requests = new List<Request>();
+	internal class Program
+	{
+		static string filePath = "SpilLager.json";
+		static string requestFilePath = "Request.json";
 
-        static void Main(string[] args)
+		// Lister til spil og forespørgsler
+		static List<Game> games = new List<Game>();
+		static List<Request> requests = new List<Request>();
+
+		static void Main(string[] args)
+		{
+			Console.Title = "Genspil Lagerstyring"; // Titel på konsol-vinduet 
+			bool isRunning = true;
+
+			LoadGames();
+			LoadRequests();
+
+			while (isRunning)
+			{
+				ShowMainMenu();
+
+				string input = Console.ReadKey(true).KeyChar.ToString();
+
+				switch (input)
+				{
+					case "1":
+						VisLagerAfSpil();
+						break;
+
+					case "2":
+						SøgEfterSpil();
+						break;
+
+					case "3":
+						TilføjSpil();
+						break;
+
+					case "4":
+						RegistrerForespørgelser();
+						break;
+
+					case "5":
+						SeForespørgelser();
+						break;
+
+					case "6":
+						UdskrivLagerListe();
+						break;
+
+					case "7":
+						TilføjKopiAfSpil();
+						break;
+
+					case "8":
+						isRunning = false;
+						break;
+
+
+					default:
+						Console.ForegroundColor = ConsoleColor.Red;
+						Console.WriteLine("Indtast venligst et gyldigt tal");
+						Console.ResetColor();
+						Console.ReadKey(true);
+						Console.Clear();
+						break;
+				}
+			}
+		}
+
+			static void ShowMainMenu()
+			{
+				Console.Clear();
+				Console.WriteLine("=== Genspil Lagerstyring ===");
+				Console.WriteLine("1) Se lager");
+				Console.WriteLine("2) Søg efter spil");
+				Console.WriteLine("3) Tilføj spil");
+				Console.WriteLine("4) Registrer forespørgsel");
+				Console.WriteLine("5) Se forespørgsler");
+				Console.WriteLine("6) Udskriv lagerliste");
+				Console.WriteLine("7) Tilføj kopi af spil");
+				Console.WriteLine("8) Exit");
+			}
+
+		static void VisLagerAfSpil()
+		{
+			Console.Clear();
+
+			if (games.Count == 0)
+			{
+				Console.WriteLine("Ingen spil på lager.");
+				ReturnToMenu();
+				return;
+			}
+
+			Console.WriteLine("=== Spil på lager ===\n");
+
+			foreach (Game game in games)
+			{
+				Console.WriteLine($"- {game.Name}");
+			}
+
+			ReturnToMenu();
+		}
+
+		static void SøgEfterSpil()
         {
+            string title = null;
+            string genre = null;
+            int players = -1;
+            decimal minPrice = -1;
+            decimal maxPrice = 9999;
+            string condition = null;
 
-            Console.Title = "Genspil Lagerstyring"; // Titel på konsol-vinduet 
-            bool isRunning = true;
-            // Changed
-            while (isRunning)
+            bool exit = false;
+
+            Console.Clear();
+            do
             {
-                ShowMainMenu();
+                Console.Clear();
+                Console.WriteLine("=== Søg efter spil ===");
+                Console.WriteLine("Vælg et søgekriterie: ");
+                Console.Write("\n1) Titel");
+                if (title != null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write($" [ {title} ]");
+                    Console.ResetColor();
+                }
+                Console.Write("\n2) Genre");
+                if (genre != null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write($" [ {genre} ]");
+                    Console.ResetColor();
+                }
+                Console.Write("\n3) Antal Spillere");
+                if (players != -1)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write($" [ {players} ]");
+                    Console.ResetColor();
+                }
+                Console.Write("\n4) Pris");
+                if (minPrice > 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write($" [ {minPrice} - {maxPrice} DKK. ]");
+                    Console.ResetColor();
+                }
+                Console.Write("\n5) Stand");
+                if (condition != null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write($" [ {condition} ]");
+                    Console.ResetColor();
+                }
+
+                Console.WriteLine("\n\n[ Tryk S for at søge ]");
+                Console.WriteLine("[ Tryk M for at gå tilbage til hovedmenuen ]");
                 string input = Console.ReadKey(true).KeyChar.ToString();
 
                 switch (input)
                 {
                     case "1":
-                        VisLagerAfSpil();
+                        Console.Write("\nIndtast titel (efterlad blank for at fjerne søgekriteriet): ");
+                        title = Console.ReadLine();
+                        if (title == "")
+                        {
+                            title = null;
+                        }
                         break;
-
                     case "2":
-                        SøgEfterSpil();
+                        Console.Write("\nIndtast genre (efterlad blank for at fjerne søgekriteriet): ");
+                        genre = Console.ReadLine();
+                        if (genre == "")
+                        {
+                            genre = null;
+                        }
                         break;
-
                     case "3":
-                        Console.Clear();
-                        TilføjSpil();
+                        Console.Write("\nIndtast antal spillere (efterlad blank for at fjerne søgekriteriet): ");
+                        string input3 = Console.ReadLine();
+                        if (input3 == "")
+                        {
+                            players = -1;
+                        }
+                        else
+                        {
+                            try
+                            {
+								players = Convert.ToInt32(input3);
+							}
+							catch
+							{
+								Console.ForegroundColor = ConsoleColor.Red;
+								Console.WriteLine("Fejl: Indtast venligst et helt tal");
+								Console.ResetColor();
+                                Console.ReadKey(true);
+                            }
+                        }
                         break;
-
                     case "4":
-                        RegistrerForespørgelser();
-                        break;
+                        Console.Write("\nIndtast minimumspris (efterlad blank for at fjerne søgekriteriet): ");
+                        string input4 = Console.ReadLine();
+                        if (input4 == "")
+                        {
+							minPrice = -1;
+                        }
+                        else
+                        {
+                            try
+                            {
+								minPrice = Convert.ToInt32(input4);
+							}
+							catch
+							{
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Fejl: Indtast venligst et helt tal");
+                                Console.ResetColor();
+                                Console.ReadKey(true);
+                            }
+                            Console.Write($"\nIndtast maksimalpris: {minPrice} - ");
+                            input4 = Console.ReadLine();
+                            if (input4 == "")
+                            {
+                                maxPrice = -1;
+                            }
+                            else
+                            {
+                                try
+                                {
+									maxPrice = Convert.ToInt32(input4);
+								}
+                                catch
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("Fejl: Indtast venligst et helt tal");
+                                    Console.ResetColor();
+                                    Console.ReadKey(true);
+                                }
+                            }
+                        }
 
+                        break;
                     case "5":
-                        SeForespørgelser();
+                        Console.Write("\nIndtast stand (efterlad blank for at fjerne søgekriteriet): ");
+                        condition = Console.ReadLine();
+                        if (condition == "")
+                        {
+                            condition = null;
+                        }
                         break;
+                    case "s":
+						Console.Clear();
+						Console.WriteLine("=== Søgeresultat === ");
+                        foreach (Game game in games)
+						{
+							foreach (GameCopy copy in game.gameCopies)
+							{
+								if ((title == null || game.Name.ToLower() == title.ToLower())
+									&& (genre == null || game.Genre.ToLower() == genre.ToLower())
+									&& (players == -1 || (game.MinPlayers <= players && game.MaxPlayers >= players))
+									&& (minPrice == -1 || (copy.Price >= minPrice && copy.Price <= maxPrice))
+									&& (condition == null || copy.Condition.ToLower() == condition.ToLower()))
+								{
+									copy.PrintGame(game);
+								}
+							}
+						}
 
-                    case "6":
-                        UdskrivLagerListe();
-                        break;
-
-                    case "7":
-                        isRunning = false;
-                        break;
-
-                        //case "8":
-                        //TilføjKopiAfSpil();
-                        //break;
-
-                    default:
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Indtast venligst et gyldigt tal");
+                        Console.WriteLine("\n[ Tryk på en vilkårlig tast for at gå tilbage til menuen ]");
                         Console.ReadKey(true);
-                        Console.ResetColor(); // Changed
-                        Console.Clear();
-                        break;
-                }
-            }
-        }
+						break;
+					case "m":
+						exit = true;
+						break;
+				}
+			} while (!exit);
+		}
 
-        static void ShowMainMenu()
-        {
-            Console.Clear();
-            Console.WriteLine("=== Genspil Lagerstyring ===");
-            Console.WriteLine("1) Se lager");
-            Console.WriteLine("2) Søg efter spil");
-            Console.WriteLine("3) Tilføj spil");
-            Console.WriteLine("4) Registrer forespørgsel");
-            Console.WriteLine("5) Se forespørgsler");
-            Console.WriteLine("6) Udskriv lagerliste");
-            Console.WriteLine("7) Exit");
-            Console.WriteLine("8) Tilføj kopi af spil");
-        }
+	
 
-        static void VisLagerAfSpil()
-        {
-        }
+		static void TilføjSpil()
+			{
+			Console.Clear();
+				Console.WriteLine("Du kan tilføje et eller flere spil til Systemet.");
+				Console.WriteLine("----------------------------------------------");
+				Console.Write("Indtast spillets navn: ");
+				string userInputName = Console.ReadLine().ToLower();
 
-        static void SøgEfterSpil()
-        {
-        }
+				foreach (Game item in games) 
+				{
+					if (item.Name == userInputName)
+					{
+						Console.WriteLine($"{userInputName} eksisterer allerede i systemet.");
+						ContinueOrMenu();
+						return;
+					}
+				}
 
-        
-        static void TilføjSpil()
-        {
-            Console.WriteLine("TilføjSpil: Du kan tilføje spil til Systemet.");
-            Console.WriteLine("----------------------------------------------");
-            Console.WriteLine("Indsat spil navn.");
-            string userInputName = Console.ReadLine().ToLower();
+				Console.Write("Indtast genre: ");
+				string userInputGenre = Console.ReadLine().ToLower();
 
-            foreach (Game item in games)
-            {
-                if (item.Name == userInputName)
-                {
-                    Console.WriteLine($"{userInputName} eksisterer allerede i systemet.");
-                    ContinueOrMenu();
-                    return;
-                }
-            }
+				Console.Write("Índtast MinPlayers: ");
+				int userInputMinPlayers = GetPlayerNrValid();
 
-            Console.WriteLine("Indsat genre.");
-            string userInputGenre = Console.ReadLine().ToLower();
+				Console.Write("Indtast MaxPlayers: ");
+				int userInputMaxPlayers = GetPlayerNrValid();
+				while (userInputMinPlayers > userInputMaxPlayers)
+			{
+		
+				Console.WriteLine("MaxPlayers skal være større end eller lig med MinPlayers.");
+				Console.WriteLine();
+				Console.Write("Indtast MaxPlayers igen: ");
+					userInputMaxPlayers = GetPlayerNrValid();
+				}
 
-            Console.WriteLine("Indsat MinPlayers.");
-            int userInputMinPlayers = GetPlayerNrValid();
-                
-            Console.WriteLine("Indsat MaxPlayers.");
-            int userInputMaxPlayers = GetPlayerNrValid();
-            while (userInputMinPlayers > userInputMaxPlayers)
-            {
-                Console.WriteLine("Max Players skal være større end eller lig med Min Players.");
-                Console.WriteLine("Indsat MaxPlayers igen.");
-                userInputMaxPlayers = GetPlayerNrValid();
-            }
+				Game game = new Game(userInputName, userInputGenre, userInputMinPlayers, userInputMaxPlayers);
+			games.Add(game);
+			SaveGames();
 
-            Game game = new Game(userInputName, userInputGenre, userInputMinPlayers, userInputMaxPlayers);
-            games.Add(game);
-    
-            Console.WriteLine($"Nu - {userInputName} - var tilføjet til systemet.");
-            ContinueOrMenu();
-        }
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.WriteLine($"{userInputName} - er nu tilføjet til systemet");
+			Console.ResetColor();
 
-        static string ContinueOrMenu()
-        {
-            Console.WriteLine("Vil du tilføje Spil mere? \n 1.ja \n 2.nej");
-            String userAnswer = Console.ReadLine();
-            while ((userAnswer != "1") && (userAnswer != "2"))
-            {
-                Console.WriteLine("Ugyldigt svar. Indsat venligst 1 eller 2.");
-                userAnswer = Console.ReadLine();
-            }
-            Console.Clear();
-            switch (userAnswer)
-            {
-                case "1":
-                    TilføjSpil();
-                    break;
-                case "2":
-                    ReturnToMenu();
-                    ShowMainMenu();
-                    break;
-            }
-            return userAnswer;
-        }
+			Console.WriteLine();
+			ContinueOrMenu();
+			}
 
-        public static int GetPlayerNrValid()
-        {
-            bool isValid = false;
-            string userInputNumbers;
-            int value = -1;
-            //true --> while loop running.
-            while (!isValid)
-            {
-                userInputNumbers = Console.ReadLine();
-                bool isInteger = int.TryParse(userInputNumbers, out value);
-                if (isInteger)
-                {
-                    if (value > 0)
-                        isValid = true;
-                    else
-                    {
-                        Console.WriteLine("Indsat venligst positivt heltal."); //isValid is still false.--> while loop continues.
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Indsat venligst kun heltal. Ikke abc, decimeltarl eller noget.");
-                }
-            }
-            return value;
-        }
+			static string ContinueOrMenu()
+			{
+				Console.WriteLine("Vil du tilføje Spil mere? \n 1.ja \n 2.nej");
 
-        /*
-        static void TilføjKopiAfSpil()
-        {
-            Console.Clear();
+				string userAnswer = Console.ReadLine();
 
-            if (games.Count == 0)
-            {
-                Console.WriteLine("Ingen spil at kopiere.");
-                ReturnToMenu();
-                return;
-            }
+				while ((userAnswer != "1") && (userAnswer != "2"))
+				{
+					Console.WriteLine("Ugyldigt svar. Indtast venligst 1 eller 2.");
+					userAnswer = Console.ReadLine();
+				}
 
-            Console.WriteLine("Vælg et spil du vil kopiere:");
+				Console.Clear();
 
-            for (int i = 0; i < games.Count; i++)
-            {
-                Console.WriteLine($"{i + 1}) {games[i].Name}");
-            }
+				switch (userAnswer)
+				{
+					case "1":
+						TilføjSpil(); // fortsæt med at tilføje
+						break;
 
-            int.TryParse(Console.ReadLine(), out int choice);
+					case "2":
+						ReturnToMenu(); // tilbage til din menu
+						break;
+				}
 
-            if (choice < 1 || choice > games.Count)
-            {
-                Console.WriteLine("Ugyldigt valg.");
-                ReturnToMenu();
-                return;
-            }
+				return userAnswer;
+			}
+		
+	
 
-            Game original = games[choice - 1];
+		public static int GetPlayerNrValid()
+		{
+			bool isValid = false;
+			string userInputNumbers;
+			int value = -1;
+			//true --> while loop running.
+			while (!isValid)
+			{
+				userInputNumbers = Console.ReadLine();
+				bool isInteger = int.TryParse(userInputNumbers, out value);
+				if (isInteger)
+				{
+					if (value > 0)
+						isValid = true;
+					else
+					{
+						Console.WriteLine("Indtast venligst positivt heltal."); //isValid is still false.--> while loop continues.
+					}
+				}
+				else
+				{
+					Console.WriteLine("Indtast venligst kun heltal. Ikke abc og/eller decimaltal.");
+				}
+			}
+			return value;
+		}
 
-            Console.WriteLine("Indtast ny stand: ");
-            string condition = Console.ReadLine();
+		static void TilføjKopiAfSpil()
+		{
+			Console.Clear();
 
-            Console.WriteLine("Indtast ny pris: ");
-            decimal.TryParse(Console.ReadLine(), out decimal price);
+			if (games.Count == 0)
+			{
+				Console.WriteLine("Ingen spil på lager, tilføj venligst.");
+                Console.WriteLine();
+				ReturnToMenu();
+				return;
+			}
 
-            Console.WriteLine("Er spillet på lager? (ja/nej): ");
-            string stockInput = Console.ReadLine();
-            bool inStock = stockInput.ToLower() == "ja";
+			Console.WriteLine("Vælg venligst et spil, du gerne vil lave en kopi af: ");
+			Console.WriteLine();
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine("Nedenstående spil, er spil vi har på lager");
+			Console.ResetColor();
+			Console.WriteLine();
 
-            
-            Game copy = new Game
-            {
-                Name = original.Name,
-                Genre = original.Genre,
-                MinPlayers = original.MinPlayers,
-                MaxPlayers = original.MaxPlayers,
-                Condition = condition,
-                Price = price,
-                InStock = inStock
-            };
+			for (int i = 0; i < games.Count; i++)
+			{
+				Console.WriteLine($"{i + 1}) {games[i].Name}");
+			}
 
-            games.Add(copy);
-
-            Console.WriteLine("Kopi af spil er tilføjet!");
-
-            ReturnToMenu();
-        }
-        */
-
-
-        static void RegistrerForespørgelser()
-        {
-            Console.Clear();
-
-            Console.WriteLine("Indtast spillets navn: ");
-            string gameName = Console.ReadLine();
-
-            Console.WriteLine("Indtast kundens navn: ");
-            string customerName = Console.ReadLine();
-
-            Request newRequest = new Request
-            {
-                GameName = gameName,
-                CustomerName = customerName
-            };
-
-            requests.Add(newRequest);
-
-            Console.WriteLine("Forespørgsel er registreret!");
-
-            ReturnToMenu();
-        }
-
-        static void SeForespørgelser()
-        {
-            Console.Clear();
-
-            if (requests.Count == 0)
-            {
-                Console.WriteLine("Ingen forespørgsler registreret.");
-            }
-            else
-            {
-                foreach (Request r in requests)
-                {
-                    Console.WriteLine($"Spil: {r.GameName}");
-                    Console.WriteLine($"Kunde: {r.CustomerName}");
-                    Console.WriteLine("-----------------------");
-                }
-            }
-
-            ReturnToMenu();
-        }
-
-        static void UdskrivLagerListe()
-        {
-        }
-
-        static void LoadGames()
-        {
-        }
-
-        static void SaveGames()
-        {
-        }
-
-        static void ReturnToMenu()
-        {
             Console.WriteLine();
-            Console.WriteLine("Press 'M' to return to menu");
+			Console.Write("Indtast venligst et tal fra ovenstående liste og afslut med <Enter>: ");
 
-            while (true)
+			int.TryParse(Console.ReadLine(), out int choice);
+
+			if (choice < 1 || choice > games.Count)
+			{
+				Console.WriteLine("Ugyldigt valg.");
+				ReturnToMenu();
+				return;
+			}
+
+			Game original = games[choice - 1];
+
+			Console.WriteLine("Indtast ny stand: ");
+			string condition = Console.ReadLine();
+
+			Console.WriteLine("Indtast ny pris: ");
+			decimal.TryParse(Console.ReadLine(), out decimal price);
+
+			GameCopy newCopy = new GameCopy(condition, price, original);
+
+			original.gameCopies.Add(newCopy);
+			SaveGames();
+
+			Console.WriteLine("Kopi af spil er tilføjet!");
+
+			ReturnToMenu();
+		}
+
+		static void RegistrerForespørgelser()
+		{
+			Console.Clear();
+
+			Console.WriteLine("Indtast spillets navn: ");
+			string gameName = Console.ReadLine();
+
+			Console.WriteLine("Indtast kundens navn: ");
+			string customerName = Console.ReadLine();
+
+            Console.WriteLine("Indtast kundens email: ");
+			string customerMail = Console.ReadLine();
+
+            Console.WriteLine("Indtast kundens telefonnummer: ");
+			string customerPhone = Console.ReadLine();
+
+			Console.WriteLine("Indtast ønskede stand: ");
+			string customerCondition = Console.ReadLine();
+
+			Console.WriteLine("Indtast ønskede pris: ");
+			string customerPrice = Console.ReadLine();
+
+			Request newRequest = new Request
+			{
+				GameName = gameName,
+				CustomerName = customerName,
+				CustomerMail = customerMail,
+				CustomerPhoneNumber = customerPhone,
+				CustomerCondition = customerCondition,
+				CustomerPrice = customerPrice
+			};
+
+			requests.Add(newRequest);
+			SaveRequests();
+
+			Console.WriteLine("Forespørgsel er registreret!");
+
+			ReturnToMenu();
+		}
+
+		static void SeForespørgelser()
+		{
+			Console.Clear();
+
+			if (requests.Count == 0)
+			{
+				Console.WriteLine("Ingen forespørgsler registreret.");
+			}
+			else
+			{
+				foreach (Request r in requests)
+				{
+					Console.WriteLine($"Spil: {r.GameName}");
+					Console.WriteLine($"Kunde: {r.CustomerName}");
+                    Console.WriteLine($"Email: {r.CustomerMail}");
+					Console.WriteLine($"TelefonNummer: {r.CustomerPhoneNumber}");
+                    Console.WriteLine($"Ønskede stand: {r.CustomerCondition}");
+                    Console.WriteLine($"Ønskede pris: {r.CustomerPrice}");
+					Console.WriteLine("-----------------------");
+				}
+			}
+
+			ReturnToMenu();
+		}
+
+		static void UdskrivLagerListe()
+		{
+			Console.Clear();
+
+			if (games.Count == 0)
+			{
+				Console.WriteLine("Ingen spil på lager.");
+				ReturnToMenu();
+				return;
+			}
+            /*
+			Console.WriteLine("=== Lagerliste ===\n");
+
+            foreach (Game game in games)
             {
-                var key = Console.ReadKey(true).KeyChar;
-
-                if (char.ToUpper(key) == 'M')
+                foreach (GameCopy copy in game.gameCopies)
                 {
-                    Console.Clear();
-                    break;
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("Tryk venligst på M for at gå tilbage: ");
-                    Console.ResetColor();
+                    copy.PrintGame(game);
                 }
             }
-        }
-    }
+			*/
+            Console.WriteLine("=== Lagerliste ===");
+            Console.WriteLine("Vælg en sortering:\n");
+            Console.WriteLine("1) Titel (A-Z)");
+            Console.WriteLine("2) Titel (Z-A)");
+            Console.WriteLine("3) Genre (A-Z)");
+            Console.WriteLine("4) Genre (Z-A)");
+			string input = Console.ReadKey(true).KeyChar.ToString();
+			switch (input)
+			{
+				case "1":
+					Console.Clear();
+                    Console.WriteLine("=== Lagerliste - Efter titel (A-Z) ===\n");
+
+                    var sortedTitle = games.OrderBy(g => g.Name).ToList();
+
+                    foreach (Game game in sortedTitle)
+                    {
+                        foreach (GameCopy copy in game.gameCopies)
+                        {
+                            copy.PrintGame(game);
+                        }
+                    }
+                    break;
+				case "2":
+					Console.Clear();
+                    Console.WriteLine("=== Lagerliste - Efter titel (Z-A) ===\n");
+
+                    var sortedTitleDescending = games.OrderByDescending(g => g.Name).ToList();
+
+                    foreach (Game game in sortedTitleDescending)
+                    {
+                        foreach (GameCopy copy in game.gameCopies)
+                        {
+                            copy.PrintGame(game);
+                        }
+                    }
+					break;
+                case "3":
+					Console.Clear();
+                    Console.WriteLine("=== Lagerliste - Efter genre (A-Z) ===\n");
+
+                    var sortedGenre = games.OrderBy(g => g.Genre).ToList();
+
+                    foreach (Game game in sortedGenre)
+                    {
+                        foreach (GameCopy copy in game.gameCopies)
+                        {
+                            copy.PrintGame(game);
+                        }
+                    }
+                    break;
+                case "4":
+					Console.Clear();
+                    Console.WriteLine("\n=== Lagerliste - Efter genre (Z-A) ===\n");
+
+                    var sortedGenreDescending = games.OrderByDescending(g => g.Genre).ToList();
+
+                    foreach (Game game in sortedGenreDescending)
+                    {
+                        foreach (GameCopy copy in game.gameCopies)
+                        {
+                            copy.PrintGame(game);
+                        }
+                    }
+                    break;
+				default:
+                    Console.ForegroundColor = ConsoleColor.Red;
+					Console.WriteLine("Ugyldigt input, prøv venligst igen");
+					Console.ResetColor();
+                    break;
+            }
+
+			ReturnToMenu();
+		}
+
+		static void LoadGames()
+		{
+			if (File.Exists(filePath))
+			{
+				string json = File.ReadAllText(filePath);
+
+				games = JsonSerializer.Deserialize<List<Game>>(json) ?? new List<Game>();
+			}
+			else
+			{
+				games = new List<Game>();
+			}
+		}
+
+		static void SaveGames()
+		{
+			string json = JsonSerializer.Serialize(games, new JsonSerializerOptions
+			{
+				WriteIndented = true
+			});
+
+			File.WriteAllText(filePath, json);
+		}
+
+		static void LoadRequests()
+		{
+			if (File.Exists(requestFilePath)) // Tjekker om forespørgsels-filen findes
+			{
+				string json = File.ReadAllText(requestFilePath); // Læser JSON
+
+				requests = JsonSerializer.Deserialize<List<Request>>(json) ?? new List<Request>();
+				// Konverterer JSON til liste
+			}
+			else
+			{
+				requests = new List<Request>(); // Opretter tom liste hvis fil ikke findes
+			}
+		}
+
+		static void SaveRequests()
+		{
+			string json = JsonSerializer.Serialize(requests); // Konverterer forespørgsler til JSON
+
+			File.WriteAllText(requestFilePath, json); // Gemmer i fil
+		}
+
+		static void ReturnToMenu()
+		{
+			Console.WriteLine();
+			Console.WriteLine("Press 'M' to return to menu");
+
+			while (true)
+			{
+				var key = Console.ReadKey(true).KeyChar;
+
+				if (char.ToUpper(key) == 'M')
+				{
+					Console.Clear();
+					break;
+				}
+				else
+				{
+					Console.ForegroundColor = ConsoleColor.Red;
+					Console.Write("Tryk venligst på M for at gå tilbage: ");
+					Console.ResetColor();
+				}
+			}
+		}
+	}
 }

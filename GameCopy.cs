@@ -1,20 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ProjektGenspil;
 
-namespace ProjektGenspil
+internal class GameCopy
 {
-    internal class GameCopy
-    {
-        public string Condition { get; set; }
-        public decimal Price { get; set; }
-        public Game Game { get; set; }
-        public GameCopy (string condition, decimal price, Game game)
-        {
-            Condition = condition;
-            Price = price;
-            Game = game;
-        }
+	public string Condition { get; set; }
+	public decimal Price { get; set; }
 
+	public GameCopy() { } // JsonSerializer bruger default constructor og sætter properties bagefter
+
+	// public Game Game { get; set; }
+
+	public GameCopy(string condition, decimal price, Game game)
+	{
+		Condition = condition;
+		Price = price;
+		//Game = game;
+	}
+
+	/*public void PrintGame()
+	{
+		Console.WriteLine($"{Game.Name}, {Game.Genre}, {Game.MinPlayers}-{Game.MaxPlayers} spillere, {Condition}, {Price} DKK.");
+	}*/
+
+	/*
+	public void PrintGame(Game game)
+	{
+		Console.WriteLine($"Navn: {game.Name}");
+		Console.WriteLine($"Genre: {game.Genre}");
+		Console.WriteLine($"Spillere: {game.MinPlayers} - {game.MaxPlayers}");
+		Console.WriteLine($"Stand: {Condition}");
+		Console.WriteLine($"Pris: {Price} DKK.");
+		Console.WriteLine("-----------------------");
+	}
+	*/
+    public void PrintGame(Game game)
+    {
+        Console.WriteLine($"{game.Name}, {game.Genre}, {game.MinPlayers}-{game.MaxPlayers} spillere, {Condition}, {Price} DKK.");
     }
 }
