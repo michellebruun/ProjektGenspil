@@ -182,7 +182,7 @@
                 switch (input)
                 {
                     case "1":
-                        Console.Write("Indtast titel (efterlad blank for at fjerne søgekriteriet): ");
+                        Console.Write("\nIndtast titel (efterlad blank for at fjerne søgekriteriet): ");
                         title = Console.ReadLine();
                         if (title == "")
                         {
@@ -190,7 +190,7 @@
                         }
                         break;
                     case "2":
-                        Console.Write("Indtast genre (efterlad blank for at fjerne søgekriteriet): ");
+                        Console.Write("\nIndtast genre (efterlad blank for at fjerne søgekriteriet): ");
                         genre = Console.ReadLine();
                         if (genre == "")
                         {
@@ -198,7 +198,7 @@
                         }
                         break;
                     case "3":
-                        Console.Write("Indtast antal spillere (efterlad blank for at fjerne søgekriteriet): ");
+                        Console.Write("\nIndtast antal spillere (efterlad blank for at fjerne søgekriteriet): ");
                         string input3 = Console.ReadLine();
                         if (input3 == "")
                         {
@@ -206,21 +206,40 @@
                         }
                         else
                         {
-                            players = Convert.ToInt32(input3);
+                            try
+                            {
+								players = Convert.ToInt32(input3);
+							}
+							catch
+							{
+								Console.ForegroundColor = ConsoleColor.Red;
+								Console.WriteLine("Fejl: Indtast venligst et helt tal");
+								Console.ResetColor();
+                                Console.ReadKey(true);
+                            }
                         }
                         break;
                     case "4":
-                        Console.Write("Indtast minimum pris (efterlad blank for at fjerne søgekriteriet): ");
+                        Console.Write("\nIndtast minimumspris (efterlad blank for at fjerne søgekriteriet): ");
                         string input4 = Console.ReadLine();
                         if (input4 == "")
                         {
-                            minPrice = -1;
+							minPrice = -1;
                         }
                         else
                         {
-                            minPrice = Convert.ToInt32(input4);
-
-                            Console.Write($"Indtast maksimal pris: {minPrice} - ");
+                            try
+                            {
+								minPrice = Convert.ToInt32(input4);
+							}
+							catch
+							{
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Fejl: Indtast venligst et helt tal");
+                                Console.ResetColor();
+                                Console.ReadKey(true);
+                            }
+                            Console.Write($"\nIndtast maksimalpris: {minPrice} - ");
                             input4 = Console.ReadLine();
                             if (input4 == "")
                             {
@@ -228,13 +247,23 @@
                             }
                             else
                             {
-                                maxPrice = Convert.ToInt32(input4);
+                                try
+                                {
+									maxPrice = Convert.ToInt32(input4);
+								}
+                                catch
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("Fejl: Indtast venligst et helt tal");
+                                    Console.ResetColor();
+                                    Console.ReadKey(true);
+                                }
                             }
                         }
 
                         break;
                     case "5":
-                        Console.Write("Indtast stand (efterlad blank for at fjerne søgekriteriet): ");
+                        Console.Write("\nIndtast stand (efterlad blank for at fjerne søgekriteriet): ");
                         condition = Console.ReadLine();
                         if (condition == "")
                         {
@@ -242,18 +271,19 @@
                         }
                         break;
                     case "s":
-                        Console.WriteLine("\n=== Søgeresultat === ");
+						Console.Clear();
+						Console.WriteLine("=== Søgeresultat === ");
                         foreach (Game game in games)
 						{
 							foreach (GameCopy copy in game.gameCopies)
 							{
-								if ((title == null || game.Name == title)
+								if ((title == null || game.Name == title.ToLower())
 									&& (genre == null || game.Genre == genre)
 									&& (players == -1 || (game.MinPlayers <= players && game.MaxPlayers >= players))
 									&& (minPrice == -1 || (copy.Price >= minPrice && copy.Price <= maxPrice))
 									&& (condition == null || copy.Condition == condition))
 								{
-									copy.PrintGame(game); // tester om det virker
+									copy.PrintGame(game);
 								}
 							}
 						}
