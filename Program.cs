@@ -229,7 +229,7 @@
 				Console.WriteLine("Indsat spil navn.");
 				string userInputName = Console.ReadLine().ToLower();
 
-				foreach (Game item in games) // =========================================================================================================
+				foreach (Game item in games) 
 				{
 					if (item.Name == userInputName)
 					{
@@ -423,38 +423,45 @@
 		{
 			Console.Clear();
 
-			Console.WriteLine("Her er listen over spillene på lager: ");
-			List<Game> games = new List<Game>(); //Here a list is made for the games // ==================================================================================
-
-			new Game { Name = "Sequence" };
-			new Game { Name = "Ticket to ride" };
-			new Game { GameName = "7 Wonders" };
-			new Game { GameName = "Alverdens" };
-			new Game { GameName = "A la carte: dessert" };
-			new Game { GameName = "Bad people" }; //The games above have been added to the list
-
-			foreach (Game game in games) // a foreach loop is used to write out the list of games
+			if (games.Count == 0)
 			{
-				Console.WriteLine(game.GameName);
+				Console.WriteLine("Ingen spil på lager.");
+				ReturnToMenu();
+				return;
 			}
 
-			Console.WriteLine();
+			Console.WriteLine("=== Lagerliste ===\n");
+			
+			foreach (Game game in games)
+			{
+				foreach (GameCopy copy in game.gameCopies)
+				{
+					copy.PrintGame(game);
+				}
+			}
 
-			Console.WriteLine("Sorteret alfabetisk:"); // Here a foreach loop is used to write out the list in alphabetical order
-			var sorted = games.OrderBy(g => g.GameName).ToList();
+			Console.WriteLine("\n=== Sorteret alfabetisk ===\n");
+
+			var sorted = games.OrderBy(g => g.Name).ToList();
 
 			foreach (Game game in sorted)
 			{
-				Console.WriteLine(game.GameName);
+				foreach (GameCopy copy in game.gameCopies)
+				{
+					copy.PrintGame(game);
+				}
 			}
 
-			Console.WriteLine();
-			Console.WriteLine("Sorteret alfabetisk:"); // Here a foreach loops is used to write out the list in reverse alphabetical order
-			var sortedDescending = games.OrderByDescending(g => g.GameName).ToList();
+			Console.WriteLine("\n=== Omvendt alfabetisk ===\n");
+
+			var sortedDescending = games.OrderByDescending(g => g.Name).ToList();
 
 			foreach (Game game in sortedDescending)
 			{
-				Console.WriteLine(game.GameName);
+				foreach (GameCopy copy in game.gameCopies)
+				{
+					copy.PrintGame(game);
+				}
 			}
 
 			ReturnToMenu();
