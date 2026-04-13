@@ -277,11 +277,11 @@
 						{
 							foreach (GameCopy copy in game.gameCopies)
 							{
-								if ((title == null || game.Name == title.ToLower())
-									&& (genre == null || game.Genre == genre)
+								if ((title == null || game.Name.ToLower() == title.ToLower())
+									&& (genre == null || game.Genre.ToLower() == genre.ToLower())
 									&& (players == -1 || (game.MinPlayers <= players && game.MaxPlayers >= players))
 									&& (minPrice == -1 || (copy.Price >= minPrice && copy.Price <= maxPrice))
-									&& (condition == null || copy.Condition == condition))
+									&& (condition == null || copy.Condition.ToLower() == condition.ToLower()))
 								{
 									copy.PrintGame(game);
 								}
