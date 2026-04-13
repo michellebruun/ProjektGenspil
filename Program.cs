@@ -123,7 +123,6 @@
                     Console.Write($" [ {players} ]");
                     Console.ResetColor();
                 }
-				//decimal minPriceDisplay = minPrice >= 0 ? minPrice : 0;
                 Console.Write("\n4) Pris");
 				if (minPrice > 0)
 				{
@@ -148,45 +147,64 @@
 						Console.Write("Indtast titel (efterlad blank for at fjerne søgekriteriet): ");
 						title = Console.ReadLine();
 						if (title == "")
+						{
 							title = null;
+						}
 						break;
 					case "2":
 						Console.Write("Indtast genre (efterlad blank for at fjerne søgekriteriet): ");
 						genre = Console.ReadLine();
 						if (genre == "")
+						{
 							genre = null;
+						}
 						break;
 					case "3":
 						Console.Write("Indtast antal spillere (efterlad blank for at fjerne søgekriteriet): ");
 						string input3 = Console.ReadLine();
 						if (input3 == "")
+						{
 							players = -1;
+						}
 						else
+						{
 							players = Convert.ToInt32(input3);
-
+						}
 						break;
 					case "4":
 						Console.Write("Indtast minimum pris (efterlad blank for at fjerne søgekriteriet): ");
 						string input4 = Console.ReadLine();
 						if (input4 == "")
+						{
 							minPrice = -1;
+						}
 						else
+						{
 							minPrice = Convert.ToInt32(input4);
-						Console.Write("Indtast maksimal pris (efterlad blank for at fjerne søgekriteriet): ");
-                        input4 = Console.ReadLine();
-                        if (input4 == "")
-                            maxPrice = -1;
-                        else
-                            maxPrice = Convert.ToInt32(input4);
+
+							Console.Write("Indtast maksimal pris: ");
+							input4 = Console.ReadLine();
+							if (input4 == "")
+							{
+								maxPrice = -1;
+							}
+							else
+							{
+								maxPrice = Convert.ToInt32(input4);
+							}
+						}
+						
                         break;
 					case "5":
 						Console.Write("Indtast stand (efterlad blank for at fjerne søgekriteriet): ");
 						condition = Console.ReadLine();
 						if (condition == "")
+						{
 							condition = null;
+						}
 						break;
 					case "s":
-                        Console.WriteLine("\nSøgeresultat (efterlad blank for at fjerne søgekriteriet): ");
+                        Console.WriteLine("\n\nSøgeresultat): ");
                         foreach (GameCopy game in GameList)
                         {
                             if ((title == null || game.Name == title)
