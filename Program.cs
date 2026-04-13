@@ -94,109 +94,132 @@
 			}
 
 		static void SøgEfterSpil()
-		{
-			string title = null;
-			string genre = null;
-			int players = -1;
-			decimal minPrice = -1;
-			decimal maxPrice = 9999;
-			string condition = null;
+        {
+            string title = null;
+            string genre = null;
+            int players = -1;
+            decimal minPrice = -1;
+            decimal maxPrice = 9999;
+            string condition = null;
 
-			bool exit = false;
+            bool exit = false;
 
-			Console.Clear();
-			do
-			{
-				Console.Clear();
-				Console.WriteLine("=== Søg efter spil ===");
-				Console.WriteLine("Vælg et søgekriterie: ");
-				Console.Write("\n1) Titel");
-				if (title != null)
-				{
-					Console.ForegroundColor = ConsoleColor.Blue;
-					Console.Write($" [ {title} ]");
-					Console.ResetColor();
-				}
-				Console.Write("\n2) Genre");
-				if (genre != null)
-				{
-					Console.ForegroundColor = ConsoleColor.Blue;
-					Console.Write($" [ {genre} ]");
-					Console.ResetColor();
-				}
-				Console.Write("\n3) Antal Spillere");
-				if (players != -1)
-				{
-					Console.ForegroundColor = ConsoleColor.Blue;
-					Console.Write($" [ {players} ]");
-					Console.ResetColor();
-				}
-				//decimal minPriceDisplay = minPrice >= 0 ? minPrice : 0;
-				Console.Write("\n4) Pris");
-				if (minPrice > 0)
-				{
-					Console.ForegroundColor = ConsoleColor.Blue;
-					Console.Write($" [ {minPrice} - {maxPrice} DKK. ]");
-					Console.ResetColor();
-				}
-				Console.Write("\n5) Stand");
-				if (condition != null)
-				{
-					Console.ForegroundColor = ConsoleColor.Blue;
-					Console.Write($" [ {condition} ]");
-					Console.ResetColor();
-				}
+            Console.Clear();
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("=== Søg efter spil ===");
+                Console.WriteLine("Vælg et søgekriterie: ");
+                Console.Write("\n1) Titel");
+                if (title != null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write($" [ {title} ]");
+                    Console.ResetColor();
+                }
+                Console.Write("\n2) Genre");
+                if (genre != null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write($" [ {genre} ]");
+                    Console.ResetColor();
+                }
+                Console.Write("\n3) Antal Spillere");
+                if (players != -1)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write($" [ {players} ]");
+                    Console.ResetColor();
+                }
+                Console.Write("\n4) Pris");
+                if (minPrice > 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write($" [ {minPrice} - {maxPrice} DKK. ]");
+                    Console.ResetColor();
+                }
+                Console.Write("\n5) Stand");
+                if (condition != null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write($" [ {condition} ]");
+                    Console.ResetColor();
+                }
 
-				Console.WriteLine("\n\nTryk S for at søge");
-				string input = Console.ReadKey(true).KeyChar.ToString();
+                Console.WriteLine("\n\n[ Tryk S for at søge ]");
+                Console.WriteLine("[ Tryk M for at gå tilbage til hovedmenuen ]");
+                string input = Console.ReadKey(true).KeyChar.ToString();
 
-				switch (input)
-				{
-					case "1":
-						Console.Write("Indtast titel (efterlad blank for at fjerne søgekriteriet): ");
-						title = Console.ReadLine();
-						if (title == "")
-							title = null;
-						break;
-					case "2":
-						Console.Write("Indtast genre (efterlad blank for at fjerne søgekriteriet): ");
-						genre = Console.ReadLine();
-						if (genre == "")
-							genre = null;
-						break;
-					case "3":
-						Console.Write("Indtast antal spillere (efterlad blank for at fjerne søgekriteriet): ");
-						string input3 = Console.ReadLine();
-						if (input3 == "")
-							players = -1;
-						else
-							players = Convert.ToInt32(input3);
+                switch (input)
+                {
+                    case "1":
+                        string message = "Indtast titel: ";
+                        if (title != null)
+                        {
+                            message = ("Indtast titel (efterlad blank for at fjerne søgekriteriet): ");
+                        }
+                        Console.Write(message);
+                        title = Console.ReadLine();
+                        if (title == "")
+                        {
+                            title = null;
+                        }
+                        break;
+                    case "2":
+                        Console.Write("Indtast genre (efterlad blank for at fjerne søgekriteriet): ");
+                        genre = Console.ReadLine();
+                        if (genre == "")
+                        {
+                            genre = null;
+                        }
+                        break;
+                    case "3":
+                        Console.Write("Indtast antal spillere (efterlad blank for at fjerne søgekriteriet): ");
+                        string input3 = Console.ReadLine();
+                        if (input3 == "")
+                        {
+                            players = -1;
+                        }
+                        else
+                        {
+                            players = Convert.ToInt32(input3);
+                        }
+                        break;
+                    case "4":
+                        Console.Write("Indtast minimum pris (efterlad blank for at fjerne søgekriteriet): ");
+                        string input4 = Console.ReadLine();
+                        if (input4 == "")
+                        {
+                            minPrice = -1;
+                        }
+                        else
+                        {
+                            minPrice = Convert.ToInt32(input4);
 
-						break;
-					case "4":
-						Console.Write("Indtast minimum pris (efterlad blank for at fjerne søgekriteriet): ");
-						string input4 = Console.ReadLine();
-						if (input4 == "")
-							minPrice = -1;
-						else
-							minPrice = Convert.ToInt32(input4);
-						Console.Write("Indtast maksimal pris (efterlad blank for at fjerne søgekriteriet): ");
-						input4 = Console.ReadLine();
-						if (input4 == "")
-							maxPrice = -1;
-						else
-							maxPrice = Convert.ToInt32(input4);
-						break;
-					/*case "5":
-						Console.Write("Indtast stand (efterlad blank for at fjerne søgekriteriet): ");
-						condition = Console.ReadLine();
-						if (condition == "")
-							condition = null;
-						break;*/
-					case "s":
-					case "S":
-						Console.WriteLine("\nSøgeresultat (efterlad blank for at fjerne søgekriteriet): ");
-						foreach (Game game in games)
+                            Console.Write($"Indtast maksimal pris: {minPrice} - ");
+                            input4 = Console.ReadLine();
+                            if (input4 == "")
+                            {
+                                maxPrice = -1;
+                            }
+                            else
+                            {
+                                maxPrice = Convert.ToInt32(input4);
+                            }
+                        }
+
+                        break;
+                    case "5":
+                        Console.Write("Indtast stand (efterlad blank for at fjerne søgekriteriet): ");
+                        condition = Console.ReadLine();
+                        if (condition == "")
+                        {
+                            condition = null;
+                        }
+                        break;
+                    case "s":
+                        Console.WriteLine("\n=== Søgeresultat === ");
+                        foreach (Game game in games)
 						{
 							foreach (GameCopy copy in game.gameCopies)
 							{
