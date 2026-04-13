@@ -153,12 +153,7 @@
                 switch (input)
                 {
                     case "1":
-                        string message = "Indtast titel: ";
-                        if (title != null)
-                        {
-                            message = ("Indtast titel (efterlad blank for at fjerne søgekriteriet): ");
-                        }
-                        Console.Write(message);
+                        Console.Write("Indtast titel (efterlad blank for at fjerne søgekriteriet): ");
                         title = Console.ReadLine();
                         if (title == "")
                         {
@@ -233,10 +228,11 @@
 								}
 							}
 						}
-				
-						Console.ReadKey(true);
+
+                        Console.WriteLine("\n[ Tryk på en vilkårlig tast for at gå tilbage til menuen ]");
+                        Console.ReadKey(true);
 						break;
-					case "x":
+					case "m":
 						exit = true;
 						break;
 				}
