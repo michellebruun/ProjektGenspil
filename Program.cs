@@ -522,42 +522,88 @@
 				ReturnToMenu();
 				return;
 			}
-
+            /*
 			Console.WriteLine("=== Lagerliste ===\n");
-			
-			foreach (Game game in games)
+
+            foreach (Game game in games)
+            {
+                foreach (GameCopy copy in game.gameCopies)
+                {
+                    copy.PrintGame(game);
+                }
+            }
+			*/
+            Console.WriteLine("=== Lagerliste ===");
+            Console.WriteLine("Vælg en sortering:\n");
+            Console.WriteLine("1) Titel (A-Z)");
+            Console.WriteLine("2) Titel (Z-A)");
+            Console.WriteLine("3) Genre (A-Z)");
+            Console.WriteLine("4) Genre (Z-A)");
+			string input = Console.ReadKey(true).KeyChar.ToString();
+			switch (input)
 			{
-				foreach (GameCopy copy in game.gameCopies)
-				{
-					copy.PrintGame(game);
-				}
-			}
+				case "1":
+					Console.Clear();
+                    Console.WriteLine("=== Lagerliste - Efter titel (A-Z) ===\n");
 
-			Console.WriteLine();
-			Console.WriteLine("\n=== Sorteret alfabetisk ===\n");
+                    var sortedTitle = games.OrderBy(g => g.Name).ToList();
 
-			var sorted = games.OrderBy(g => g.Name).ToList();
+                    foreach (Game game in sortedTitle)
+                    {
+                        foreach (GameCopy copy in game.gameCopies)
+                        {
+                            copy.PrintGame(game);
+                        }
+                    }
+                    break;
+				case "2":
+					Console.Clear();
+                    Console.WriteLine("=== Lagerliste - Efter titel (Z-A) ===\n");
 
-			foreach (Game game in sorted)
-			{
-				foreach (GameCopy copy in game.gameCopies)
-				{
-					copy.PrintGame(game);
-				}
-			}
+                    var sortedTitleDescending = games.OrderByDescending(g => g.Name).ToList();
 
-            Console.WriteLine();
-			Console.WriteLine("\n=== Omvendt alfabetisk ===\n");
+                    foreach (Game game in sortedTitleDescending)
+                    {
+                        foreach (GameCopy copy in game.gameCopies)
+                        {
+                            copy.PrintGame(game);
+                        }
+                    }
+					break;
+                case "3":
+					Console.Clear();
+                    Console.WriteLine("=== Lagerliste - Efter genre (A-Z) ===\n");
 
-			var sortedDescending = games.OrderByDescending(g => g.Name).ToList();
+                    var sortedGenre = games.OrderBy(g => g.Genre).ToList();
 
-			foreach (Game game in sortedDescending)
-			{
-				foreach (GameCopy copy in game.gameCopies)
-				{
-					copy.PrintGame(game);
-				}
-			}
+                    foreach (Game game in sortedGenre)
+                    {
+                        foreach (GameCopy copy in game.gameCopies)
+                        {
+                            copy.PrintGame(game);
+                        }
+                    }
+                    break;
+                case "4":
+					Console.Clear();
+                    Console.WriteLine("\n=== Lagerliste - Efter genre (Z-A) ===\n");
+
+                    var sortedGenreDescending = games.OrderByDescending(g => g.Genre).ToList();
+
+                    foreach (Game game in sortedGenreDescending)
+                    {
+                        foreach (GameCopy copy in game.gameCopies)
+                        {
+                            copy.PrintGame(game);
+                        }
+                    }
+                    break;
+				default:
+                    Console.ForegroundColor = ConsoleColor.Red;
+					Console.WriteLine("Ugyldigt input, prøv venligst igen");
+					Console.ResetColor();
+                    break;
+            }
 
 			ReturnToMenu();
 		}

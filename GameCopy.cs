@@ -21,6 +21,7 @@ internal class GameCopy
 		Console.WriteLine($"{Game.Name}, {Game.Genre}, {Game.MinPlayers}-{Game.MaxPlayers} spillere, {Condition}, {Price} DKK.");
 	}*/
 
+	/*
 	public void PrintGame(Game game)
 	{
 		Console.WriteLine($"Navn: {game.Name}");
@@ -30,4 +31,9 @@ internal class GameCopy
 		Console.WriteLine($"Pris: {Price} DKK.");
 		Console.WriteLine("-----------------------");
 	}
+	*/
+    public void PrintGame(Game game)
+    {
+        Console.WriteLine($"{game.Name}, {game.Genre}, {game.MinPlayers}-{game.MaxPlayers} spillere, {Condition}, {Price} DKK.");
+    }
 }
