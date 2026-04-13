@@ -138,13 +138,19 @@
                     Console.ResetColor();
                 }
 
-				Console.WriteLine("\n\nTryk S for at søge");
+				Console.WriteLine("\n\n[ Tryk S for at søge ]");
+				Console.WriteLine("[ Tryk M for at gå tilbage til hovedmenuen ]");
 				string input = Console.ReadKey(true).KeyChar.ToString();
 
 				switch (input)
 				{
 					case "1":
-						Console.Write("Indtast titel (efterlad blank for at fjerne søgekriteriet): ");
+						string message = "Indtast titel: ";
+						if (title != null)
+						{
+							message = ("Indtast titel (efterlad blank for at fjerne søgekriteriet): ");
+						}
+						Console.Write(message);
 						title = Console.ReadLine();
 						if (title == "")
 						{
@@ -152,8 +158,8 @@
 						}
 						break;
 					case "2":
-						Console.Write("Indtast genre (efterlad blank for at fjerne søgekriteriet): ");
-						genre = Console.ReadLine();
+                        Console.Write(message);
+                        genre = Console.ReadLine();
 						if (genre == "")
 						{
 							genre = null;
@@ -182,7 +188,7 @@
 						{
 							minPrice = Convert.ToInt32(input4);
 
-							Console.Write("Indtast maksimal pris: ");
+							Console.Write($"Indtast maksimal pris: {minPrice} - ");
 							input4 = Console.ReadLine();
 							if (input4 == "")
 							{
@@ -204,7 +210,7 @@
 						}
 						break;
 					case "s":
-                        Console.WriteLine("\n\nSøgeresultat): ");
+                        Console.WriteLine("\n=== Søgeresultat === ");
                         foreach (GameCopy game in GameList)
                         {
                             if ((title == null || game.Name == title)
@@ -216,6 +222,7 @@
                                 game.PrintGame();
                             }	
                         }
+						Console.WriteLine("\n[ Tryk på en vilkårlig tast for at gå tilbage til menuen ]");
                         Console.ReadKey(true);
                         break;
                     case "x":
