@@ -398,7 +398,7 @@
 				}
 				else
 				{
-					Console.WriteLine("Indtast venligst kun heltal. Ikke abc og/eller decimeltal.");
+					Console.WriteLine("Indtast venligst kun heltal. Ikke abc og/eller decimaltal.");
 				}
 			}
 			return value;
