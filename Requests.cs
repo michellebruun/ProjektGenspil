@@ -13,5 +13,9 @@ namespace Genspil
 		public string CustomerMail { get; set; }
 
 		public string CustomerPhoneNumber { get; set; }
+
+		public string CustomerCondition { get; set; }
+
+		public string CustomerPrice { get; set; }
 	}
 }

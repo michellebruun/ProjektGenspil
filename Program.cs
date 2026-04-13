@@ -101,22 +101,11 @@
 				return;
 			}
 
-			Console.WriteLine("=== Nuværende lager ===\n");
+			Console.WriteLine("=== Spil på lager ===\n");
 
 			foreach (Game game in games)
 			{
-				// Hvis der ikke er kopier
-				if (game.gameCopies.Count == 0)
-				{
-					Console.WriteLine($"{game.Name} (Ingen kopier registreret)");
-				}
-				else
-				{
-					foreach (GameCopy copy in game.gameCopies)
-					{
-						copy.PrintGame(game);
-					}
-				}
+				Console.WriteLine($"- {game.Name}");
 			}
 
 			ReturnToMenu();
@@ -474,12 +463,20 @@
             Console.WriteLine("Indtast kundens telefonnummer: ");
 			string customerPhone = Console.ReadLine();
 
+			Console.WriteLine("Indtast ønskede stand: ");
+			string customerCondition = Console.ReadLine();
+
+			Console.WriteLine("Indtast ønskede pris: ");
+			string customerPrice = Console.ReadLine();
+
 			Request newRequest = new Request
 			{
 				GameName = gameName,
 				CustomerName = customerName,
 				CustomerMail = customerMail,
-				CustomerPhoneNumber = customerPhone
+				CustomerPhoneNumber = customerPhone,
+				CustomerCondition = customerCondition,
+				CustomerPrice = customerPrice
 			};
 
 			requests.Add(newRequest);
@@ -505,7 +502,9 @@
 					Console.WriteLine($"Spil: {r.GameName}");
 					Console.WriteLine($"Kunde: {r.CustomerName}");
                     Console.WriteLine($"Email: {r.CustomerMail}");
-                    Console.WriteLine($"TelefonNummer: {r.CustomerPhoneNumber}");
+					Console.WriteLine($"TelefonNummer: {r.CustomerPhoneNumber}");
+                    Console.WriteLine($"Ønskede stand: {r.CustomerCondition}");
+                    Console.WriteLine($"Ønskede pris: {r.CustomerPrice}");
 					Console.WriteLine("-----------------------");
 				}
 			}
