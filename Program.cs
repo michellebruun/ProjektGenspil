@@ -177,7 +177,17 @@
                         }
                         else
                         {
-                            players = Convert.ToInt32(input3);
+							try
+							{
+								players = Convert.ToInt32(input3);
+							}
+							catch
+							{
+								Console.ForegroundColor = ConsoleColor.Red;
+								Console.WriteLine("Fejl: Indtast venligst et helt tal");
+								Console.ResetColor();
+                                Console.ReadKey(true);
+                            }
                         }
                         break;
                     case "4":
