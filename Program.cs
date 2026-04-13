@@ -68,6 +68,7 @@
 					default:
 						Console.ForegroundColor = ConsoleColor.Red;
 						Console.WriteLine("Indtast venligst et gyldigt tal");
+						Console.ResetColor();
 						Console.ReadKey(true);
 						Console.Clear();
 						break;
@@ -89,9 +90,37 @@
 				Console.WriteLine("8) Exit");
 			}
 
-			static void VisLagerAfSpil()
+		static void VisLagerAfSpil()
+		{
+			Console.Clear();
+
+			if (games.Count == 0)
 			{
+				Console.WriteLine("Ingen spil på lager.");
+				ReturnToMenu();
+				return;
 			}
+
+			Console.WriteLine("=== Nuværende lager ===\n");
+
+			foreach (Game game in games)
+			{
+				// Hvis der ikke er kopier
+				if (game.gameCopies.Count == 0)
+				{
+					Console.WriteLine($"{game.Name} (Ingen kopier registreret)");
+				}
+				else
+				{
+					foreach (GameCopy copy in game.gameCopies)
+					{
+						copy.PrintGame(game);
+					}
+				}
+			}
+
+			ReturnToMenu();
+		}
 
 		static void SøgEfterSpil()
         {
@@ -243,9 +272,10 @@
 
 		static void TilføjSpil()
 			{
-				Console.WriteLine("TilføjSpil: Du kan tilføje spil til Systemet.");
+			Console.Clear();
+				Console.WriteLine("Du kan tilføje et eller flere spil til Systemet.");
 				Console.WriteLine("----------------------------------------------");
-				Console.WriteLine("Indsat spil navn.");
+				Console.Write("Indtast spillets navn: ");
 				string userInputName = Console.ReadLine().ToLower();
 
 				foreach (Game item in games) 
@@ -258,18 +288,20 @@
 					}
 				}
 
-				Console.WriteLine("Indsat genre.");
+				Console.Write("Indtast genre: ");
 				string userInputGenre = Console.ReadLine().ToLower();
 
-				Console.WriteLine("Indsat MinPlayers.");
+				Console.Write("Índtast MinPlayers: ");
 				int userInputMinPlayers = GetPlayerNrValid();
 
-				Console.WriteLine("Indsat MaxPlayers.");
+				Console.Write("Indtast MaxPlayers: ");
 				int userInputMaxPlayers = GetPlayerNrValid();
 				while (userInputMinPlayers > userInputMaxPlayers)
-				{
-					Console.WriteLine("Max Players skal være større end eller lig med Min Players.");
-					Console.WriteLine("Indsat MaxPlayers igen.");
+			{
+		
+				Console.WriteLine("MaxPlayers skal være større end eller lig med MinPlayers.");
+				Console.WriteLine();
+				Console.Write("Indtast MaxPlayers igen: ");
 					userInputMaxPlayers = GetPlayerNrValid();
 				}
 
@@ -277,8 +309,12 @@
 			games.Add(game);
 			SaveGames();
 
-			Console.WriteLine($"Nu - {userInputName} - var tilføjet til systemet.");
-				ContinueOrMenu();
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.WriteLine($"{userInputName} - er nu tilføjet til systemet");
+			Console.ResetColor();
+
+			Console.WriteLine();
+			ContinueOrMenu();
 			}
 
 			static string ContinueOrMenu()
@@ -327,12 +363,12 @@
 						isValid = true;
 					else
 					{
-						Console.WriteLine("Indsat venligst positivt heltal."); //isValid is still false.--> while loop continues.
+						Console.WriteLine("Indtast venligst positivt heltal."); //isValid is still false.--> while loop continues.
 					}
 				}
 				else
 				{
-					Console.WriteLine("Indsat venligst kun heltal. Ikke abc, decimeltarl eller noget.");
+					Console.WriteLine("Indtast venligst kun heltal. Ikke abc og/eller decimeltal.");
 				}
 			}
 			return value;
@@ -345,16 +381,25 @@
 			if (games.Count == 0)
 			{
 				Console.WriteLine("Ingen spil på lager, tilføj venligst.");
+                Console.WriteLine();
 				ReturnToMenu();
 				return;
 			}
 
-			Console.WriteLine("Vælg et spil du vil kopiere:");
+			Console.WriteLine("Vælg venligst et spil, du gerne vil lave en kopi af: ");
+			Console.WriteLine();
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine("Nedenstående spil, er spil vi har på lager");
+			Console.ResetColor();
+			Console.WriteLine();
 
 			for (int i = 0; i < games.Count; i++)
 			{
 				Console.WriteLine($"{i + 1}) {games[i].Name}");
 			}
+
+            Console.WriteLine();
+			Console.Write("Indtast venligst et tal fra ovenstående liste og afslut med <Enter>: ");
 
 			int.TryParse(Console.ReadLine(), out int choice);
 
@@ -459,6 +504,7 @@
 				}
 			}
 
+			Console.WriteLine();
 			Console.WriteLine("\n=== Sorteret alfabetisk ===\n");
 
 			var sorted = games.OrderBy(g => g.Name).ToList();
@@ -471,6 +517,7 @@
 				}
 			}
 
+            Console.WriteLine();
 			Console.WriteLine("\n=== Omvendt alfabetisk ===\n");
 
 			var sortedDescending = games.OrderByDescending(g => g.Name).ToList();
