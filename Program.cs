@@ -81,7 +81,7 @@
 			static void ShowMainMenu()
 			{
 				Console.Clear();
-				Console.Write("\x1b[3J"); // Fix til Console.Clear() bug i Windows 11's konsolvindue
+				Console.Write("\x1b[3J");
 				Console.WriteLine("=== Genspil Lagerstyring ===");
 				Console.WriteLine("1) Se lager");
 				Console.WriteLine("2) Søg efter spil");
@@ -96,7 +96,7 @@
 		static void VisLagerAfSpil()
 		{
 			Console.Clear();
-            Console.Write("\x1b[3J"); // Fix til Console.Clear() bug i Windows 11's konsolvindue
+            Console.Write("\x1b[3J");
 
             if (games.Count == 0)
 			{
@@ -127,11 +127,13 @@
             bool exit = false;
 
             Console.Clear();
-            Console.Write("\x1b[3J"); // Fix til Console.Clear() bug i Windows 11's konsolvindue
+            Console.Write("\x1b[3J");
+
+			// ========== Display af menuen ==========
             do
             {
                 Console.Clear();
-                Console.Write("\x1b[3J"); // Fix til Console.Clear() bug i Windows 11's konsolvindue
+                Console.Write("\x1b[3J");
                 Console.WriteLine("=== Søg efter spil ===");
                 Console.WriteLine("Vælg et søgekriterie: ");
                 Console.Write("\n1) Titel");
@@ -172,6 +174,8 @@
 
                 Console.WriteLine("\n\n[ Tryk S for at søge ]");
                 Console.WriteLine("[ Tryk M for at gå tilbage til hovedmenuen ]");
+                
+				// ========== Switch på menuen ==========
                 string input = Console.ReadKey(true).KeyChar.ToString();
 
                 switch (input)
@@ -205,7 +209,7 @@
                             {
 								players = Convert.ToInt32(input3);
 							}
-							catch
+							catch (FormatException ex)
 							{
 								Console.ForegroundColor = ConsoleColor.Red;
 								Console.WriteLine("Fejl: Indtast venligst et helt tal");
@@ -284,8 +288,9 @@
                         }
                         break;
                     case "s":
-						Console.Clear();
-                        Console.Write("\x1b[3J"); // Fix til Console.Clear() bug i Windows 11's konsolvindue
+                        // ========== Foretag søgningen ==========
+                        Console.Clear();
+                        Console.Write("\x1b[3J");
 
                         Console.WriteLine("=== Søgeresultat === ");
 
@@ -303,11 +308,11 @@
 						{
 							foreach (GameCopy copy in game.gameCopies)
 							{
-								if ((title == null || game.Name.ToLower() == title.ToLower())
-									&& (genre == null || game.Genre.ToLower() == genre.ToLower())
-									&& (players == -1 || (game.MinPlayers <= players && game.MaxPlayers >= players))
+								if ((title == null || game.Name.Contains(title, StringComparison.CurrentCultureIgnoreCase))
+									&& (genre == null || game.Genre.Contains(genre, StringComparison.CurrentCultureIgnoreCase))
+                                    && (players == -1 || (game.MinPlayers <= players && game.MaxPlayers >= players))
 									&& (minPrice == -1 || (copy.Price >= minPrice && copy.Price <= maxPrice))
-									&& (condition == null || copy.Condition.ToLower() == condition.ToLower()))
+									&& (condition == null || copy.Condition.Contains(condition, StringComparison.CurrentCultureIgnoreCase)))
 								{
                                     copy.PrintGame(game, longestTitle, longestGenre);
                                 }
@@ -329,7 +334,7 @@
 		static void TilføjSpil()
 			{
 			Console.Clear();
-            Console.Write("\x1b[3J"); // Fix til Console.Clear() bug i Windows 11's konsolvindue
+            Console.Write("\x1b[3J");
 				Console.WriteLine("Du kan tilføje et eller flere spil til Systemet.");
 				Console.WriteLine("----------------------------------------------");
 				Console.Write("Indtast spillets navn: ");
@@ -387,7 +392,7 @@
 				}
 
 				Console.Clear();
-				Console.Write("\x1b[3J"); // Fix til Console.Clear() bug i Windows 11's konsolvindue
+				Console.Write("\x1b[3J");
 
 				switch (userAnswer)
 				{
@@ -490,7 +495,7 @@
 		static void RegistrerForespørgelser()
 		{
 			Console.Clear();
-            Console.Write("\x1b[3J"); // Fix til Console.Clear() bug i Windows 11's konsolvindue
+            Console.Write("\x1b[3J");
 
             Console.WriteLine("Indtast spillets navn: ");
 			string gameName = Console.ReadLine();
@@ -531,7 +536,7 @@
 		static void SeForespørgelser()
 		{
 			Console.Clear();
-            Console.Write("\x1b[3J"); // Fix til Console.Clear() bug i Windows 11's konsolvindue
+            Console.Write("\x1b[3J");
 
             if (requests.Count == 0)
 			{
@@ -557,7 +562,7 @@
 		static void UdskrivLagerListe()
 		{
 			Console.Clear();
-            Console.Write("\x1b[3J"); // Fix til Console.Clear() bug i Windows 11's konsolvindue
+            Console.Write("\x1b[3J");
 
             if (games.Count == 0)
 			{
@@ -597,7 +602,7 @@
 			{
 				case "1":
 					Console.Clear();
-                    Console.Write("\x1b[3J"); // Fix til Console.Clear() bug i Windows 11's konsolvindue
+                    Console.Write("\x1b[3J");
                     Console.WriteLine("=== Lagerliste - Efter titel (A-Z) ===\n");
 
                     Console.WriteLine(header);
@@ -615,7 +620,7 @@
                     break;
 				case "2":
 					Console.Clear();
-                    Console.Write("\x1b[3J"); // Fix til Console.Clear() bug i Windows 11's konsolvindue
+                    Console.Write("\x1b[3J");
                     Console.WriteLine("=== Lagerliste - Efter titel (Z-A) ===\n");
 
                     Console.WriteLine(header);
@@ -633,7 +638,7 @@
 					break;
                 case "3":
 					Console.Clear();
-                    Console.Write("\x1b[3J"); // Fix til Console.Clear() bug i Windows 11's konsolvindue
+                    Console.Write("\x1b[3J");
                     Console.WriteLine("=== Lagerliste - Efter genre (A-Z) ===\n");
 
                     Console.WriteLine(header);
@@ -651,7 +656,7 @@
                     break;
                 case "4":
 					Console.Clear();
-                    Console.Write("\x1b[3J"); // Fix til Console.Clear() bug i Windows 11's konsolvindue
+                    Console.Write("\x1b[3J");
                     Console.WriteLine("\n=== Lagerliste - Efter genre (Z-A) ===\n");
 
                     Console.WriteLine(header);
@@ -735,7 +740,8 @@
 				if (char.ToUpper(key) == 'M')
 				{
 					Console.Clear();
-					break;
+                    Console.Write("\x1b[3J");
+                    break;
 				}
 				else
 				{
