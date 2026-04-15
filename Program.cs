@@ -1,11 +1,11 @@
 ﻿namespace ProjektGenspil
 {
+	using Genspil;
 	using System;
 	using System.Collections.Generic; // Lists
 	using System.Diagnostics;
 	using System.Linq; // Lookup
 	using System.Text.Json;
-	using Genspil;
 
 	internal class Program
 	{
@@ -71,6 +71,7 @@
 						Console.ResetColor();
 						Console.ReadKey(true);
 						Console.Clear();
+
 						break;
 				}
 			}
@@ -117,7 +118,7 @@
             string genre = null;
             int players = -1;
             decimal minPrice = -1;
-            decimal maxPrice = 9999;
+            decimal maxPrice = -1;
             string condition = null;
 
             bool exit = false;
@@ -150,7 +151,7 @@
                     Console.ResetColor();
                 }
                 Console.Write("\n4) Pris");
-                if (minPrice > 0)
+                if (minPrice > -1)
                 {
                     Console.ForegroundColor = ConsoleColor.Blue;
                     Console.Write($" [ {minPrice} - {maxPrice} DKK. ]");
@@ -220,7 +221,16 @@
                             try
                             {
 								minPrice = Convert.ToInt32(input4);
-							}
+                                if (minPrice < 0)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("Fejl: Prisen kan ikke være lavere end 0");
+                                    Console.ResetColor();
+                                    minPrice = -1;
+                                    Console.ReadKey(true);
+									break;
+                                }
+                            }
 							catch
 							{
                                 Console.ForegroundColor = ConsoleColor.Red;
@@ -232,13 +242,22 @@
                             input4 = Console.ReadLine();
                             if (input4 == "")
                             {
-                                maxPrice = -1;
+								minPrice = -1;
                             }
                             else
                             {
                                 try
                                 {
 									maxPrice = Convert.ToInt32(input4);
+									if (maxPrice <= minPrice)
+									{
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.WriteLine("Fejl: Maksimalprisen kan ikke være højere end minimumsprisen");
+                                        Console.ResetColor();
+                                        minPrice = -1;
+                                        maxPrice = -1;
+                                        Console.ReadKey(true);
+                                    }
 								}
                                 catch
                                 {
@@ -261,7 +280,19 @@
                         break;
                     case "s":
 						Console.Clear();
-						Console.WriteLine("=== Søgeresultat === ");
+
+                        Console.WriteLine("=== Søgeresultat === ");
+
+                        int longestTitle = games.Max(g => g.Name.Length);
+                        int longestGenre = games.Max(g => g.Genre.Length);
+
+						string header = "Titel".PadRight(longestTitle) + " | Genre".PadRight(longestGenre + 3) + " | Antal spillere".PadRight(14) + " | Pris i DKK.".PadRight(5) + " | Stand";
+						Console.WriteLine(header);
+						string separator = "----------------";
+						for (int i = 0; i < header.Length; i++)
+							separator += "-";
+                        Console.WriteLine(separator);
+
                         foreach (Game game in games)
 						{
 							foreach (GameCopy copy in game.gameCopies)
@@ -272,8 +303,8 @@
 									&& (minPrice == -1 || (copy.Price >= minPrice && copy.Price <= maxPrice))
 									&& (condition == null || copy.Condition.ToLower() == condition.ToLower()))
 								{
-									copy.PrintGame(game);
-								}
+                                    copy.PrintGame(game, longestTitle, longestGenre);
+                                }
 							}
 						}
 
@@ -540,19 +571,32 @@
             Console.WriteLine("3) Genre (A-Z)");
             Console.WriteLine("4) Genre (Z-A)");
 			string input = Console.ReadKey(true).KeyChar.ToString();
-			switch (input)
+
+            int longestTitle = games.Max(g => g.Name.Length);
+            int longestGenre = games.Max(g => g.Genre.Length);
+
+            string header = "Titel".PadRight(longestTitle) + " | Genre".PadRight(longestGenre + 3) + " | Antal spillere".PadRight(14) + " | Pris i DKK.".PadRight(5) + " | Stand";
+            string separator = "----------------";
+            for (int i = 0; i < header.Length; i++)
+                separator += "-";
+
+
+            switch (input)
 			{
 				case "1":
 					Console.Clear();
                     Console.WriteLine("=== Lagerliste - Efter titel (A-Z) ===\n");
 
-                    var sortedTitle = games.OrderBy(g => g.Name).ToList();
+                    Console.WriteLine(header);
+                    Console.WriteLine(separator);
 
+                    var sortedTitle = games.OrderBy(g => g.Name).ToList();
+					
                     foreach (Game game in sortedTitle)
                     {
                         foreach (GameCopy copy in game.gameCopies)
                         {
-                            copy.PrintGame(game);
+                            copy.PrintGame(game, longestTitle, longestGenre);
                         }
                     }
                     break;
@@ -560,13 +604,16 @@
 					Console.Clear();
                     Console.WriteLine("=== Lagerliste - Efter titel (Z-A) ===\n");
 
+                    Console.WriteLine(header);
+                    Console.WriteLine(separator);
+
                     var sortedTitleDescending = games.OrderByDescending(g => g.Name).ToList();
 
                     foreach (Game game in sortedTitleDescending)
                     {
                         foreach (GameCopy copy in game.gameCopies)
                         {
-                            copy.PrintGame(game);
+                            copy.PrintGame(game, longestTitle, longestGenre);
                         }
                     }
 					break;
@@ -574,13 +621,16 @@
 					Console.Clear();
                     Console.WriteLine("=== Lagerliste - Efter genre (A-Z) ===\n");
 
+                    Console.WriteLine(header);
+                    Console.WriteLine(separator);
+
                     var sortedGenre = games.OrderBy(g => g.Genre).ToList();
 
                     foreach (Game game in sortedGenre)
                     {
                         foreach (GameCopy copy in game.gameCopies)
                         {
-                            copy.PrintGame(game);
+                            copy.PrintGame(game, longestTitle, longestGenre);
                         }
                     }
                     break;
@@ -588,13 +638,16 @@
 					Console.Clear();
                     Console.WriteLine("\n=== Lagerliste - Efter genre (Z-A) ===\n");
 
+                    Console.WriteLine(header);
+                    Console.WriteLine(separator);
+
                     var sortedGenreDescending = games.OrderByDescending(g => g.Genre).ToList();
 
                     foreach (Game game in sortedGenreDescending)
                     {
                         foreach (GameCopy copy in game.gameCopies)
                         {
-                            copy.PrintGame(game);
+                            copy.PrintGame(game, longestTitle, longestGenre);
                         }
                     }
                     break;

@@ -32,8 +32,9 @@ internal class GameCopy
 		Console.WriteLine("-----------------------");
 	}
 	*/
-    public void PrintGame(Game game)
+    public void PrintGame(Game game, int nameLength, int genreLength)
     {
-        Console.WriteLine($"{game.Name}, {game.Genre}, {game.MinPlayers}-{game.MaxPlayers} spillere, {Condition}, {Price} DKK.");
+		string players = $"{game.MinPlayers}-{game.MaxPlayers} spillere";
+		Console.WriteLine($"{game.Name.PadRight(nameLength)} | {game.Genre.PadRight(genreLength)} | {players.PadRight(14)} | {Price.ToString().PadRight(6)} DKK. | {Condition}");
     }
 }
